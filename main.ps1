@@ -9,6 +9,13 @@ $btn_firewall_enable_Click = { enable_firewall }
 $btn_firewall_disable_Click = { disable_firewall }
 $btn_rdp_enable_Click = { enable_rdp }
 $btn_rdp_disable_Click = { disable_rdp }
+$btn_admin_enable_Click = { enable_admin }
+
+function enable_admin {
+    $enable_admin = net user "Administrator" /active:yes
+    Write-Host $enable_admin -foregroundcolor Green
+    Add-OutputBoxLine -Message $enable_admin
+}
 
 
 function enable_firewall {
