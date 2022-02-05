@@ -6,10 +6,17 @@ if ($testadmin -eq $false) {
 }
 
 $btn_firewall_enable_Click = { enable_firewall }
+$btn_firewall_disable_Click = { disable_firewall }
+
 
 function enable_firewall {
     Set-NetFirewallProfile -Profile Domain, Public, Private -Enabled True
     check_firewall_stat
+}
+
+function disable_firewall {
+    Set-NetFirewallProfile -Profile Domain, Public, Private -Enabled False
+    check_firewall_stat 
 }
 function check_firewall_stat() {
     $firewall_profile = (get-NetFirewallProfile)
