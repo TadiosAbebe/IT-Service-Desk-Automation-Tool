@@ -11,6 +11,24 @@ $btn_rdp_enable_Click = { enable_rdp }
 $btn_rdp_disable_Click = { disable_rdp }
 $btn_admin_enable_Click = { enable_admin }
 $btn_set_password_Click = { set_admin_password }
+$btn_add_thispc_Click = { add_thispcicon }
+
+function add_thispcicon {
+    New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -PropertyType DWord -Value 0 -Force
+    check_pc_ico
+}
+
+function check_pc_ico() {
+    $check_icon = get-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}"
+    if ($null -eq $check_icon. { 20D04FE0-3AEA-1069-A2D8-08002B30309D }) {
+        Write-Host "This PC Icon has been added to the Desktop`n" -foregroundcolor Green
+        Add-OutputBoxLine -Message "This PC Icon has been added to the Desktop"
+    }
+    else {
+        Write-Host "This PC Icon has not been added to the Desktop`n" -foregroundcolor Red
+        Add-OutputBoxLine -Message "This PC Icon has not been added to the Desktop"
+    }
+}
 
 function set_admin_password {
     if ($tb_admin_password.Text -eq "") {
