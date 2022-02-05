@@ -10,6 +10,19 @@ $btn_firewall_disable_Click = { disable_firewall }
 $btn_rdp_enable_Click = { enable_rdp }
 $btn_rdp_disable_Click = { disable_rdp }
 $btn_admin_enable_Click = { enable_admin }
+$btn_set_password_Click = { set_admin_password }
+
+function set_admin_password {
+    if ($tb_admin_password.Text -eq "") {
+        $tb_admin_password.BackColor = "Red"
+    }
+    else {
+        $password = $tb_admin_password.Text
+        $set_pass = net user "Administrator" $password
+        Write-Host $set_pass -foregroundcolor Green
+        Add-OutputBoxLine -Message $set_pass
+    }
+}
 
 function enable_admin {
     $enable_admin = net user "Administrator" /active:yes
