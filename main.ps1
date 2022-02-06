@@ -66,6 +66,15 @@ $btn_changednsalt_Click = {
 }
 $btn_check_status_Click = { check_act_stat }
 $btn_activate_Click = { windows_activate }
+$btn_check_all_Click = {
+    $cb1.Checked = $true
+    $cb2.Checked = $true
+    $cb3.Checked = $true
+    $cb4.Checked = $true
+    $cb5.Checked = $true
+    $cb6.Checked = $true
+    $cb7.Checked = $true
+}
 
 function windows_activate {
     $loc1 = Join-Path $PSScriptRoot "res\KMS_VL_ALL-34\AutoRenewal-Setup.cmd"
