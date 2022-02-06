@@ -98,6 +98,65 @@ $btn_clear_Click = {
     $tb_dnsalt.Text = ""
     $tb_dnsalt_new.Text = ""
 }
+$run_script_Click = {
+    if ($cb1.Checked) { enable_firewall }
+    if ($cb2.Checked) { enable_rdp }
+    if ($cb3.Checked) { 
+        enable_admin
+        set_admin_password 
+    }
+    if ($cb4.Checked) { 
+        set_param
+    }
+    if ($cb5.Checked) { rename_computer }
+    if ($cb6.Checked) { 
+        add_thispcicon
+        add_networkicon 
+    }
+    if ($cb7.Checked) { 
+        windows_activate
+        set_info
+    }
+}
+function set_param {
+    if ($global:selected_adapter) {
+        [bool]$check_fill = 1
+        if ($tb_ip_new.Text -eq "") {
+            $tb_ip_new.BackColor = "Red"
+            $check_fill = 0
+        }
+        if ($tb_subnet_new.Text -eq "") {
+            $tb_subnet_new.BackColor = "Red"
+            $check_fill = 0
+        }
+        if ($tb_getway_new.Text -eq "") {
+            $tb_getway_new.BackColor = "Red"
+            $check_fill = 0
+        }
+        if ($tb_dns_new.Text -eq "") {
+            $tb_dns_new.BackColor = "Red"
+            $check_fill = 0
+        }
+        if ($tb_dnsalt_new.Text -eq "") {
+            $tb_dnsalt_new.BackColor = "Red"
+            $check_fill = 0
+        }
+        if ($check_fill) {
+            $ip = $tb_ip_new.Text
+            $sub = $tb_subnet_new.Text
+            $get = $tb_getway_new.Text
+            $d1 = $tb_dns_new.Text
+            $d2 = $tb_dnsalt_new.Text
+            netsh interface ipv4 set address name=$global:selected_adapter source=static address=$ip mask=$sub gateway=$get store=persistent
+            netsh interface ipv4 set dnsservers name=$global:selected_adapter  source=static address="$d1" validate=no
+            netsh interface ipv4 add dnsservers name=$global:selected_adapter address="$d2" validate=no index=2
+        }
+    }
+    else {
+        Write-Host "Network Adapter is not Selected" -foregroundcolor Red
+        Add-OutputBoxLine -Message "Network Adapter is not Selected" 
+    }
+}
 
 function windows_activate {
     $loc1 = Join-Path $PSScriptRoot "res\KMS_VL_ALL-34\AutoRenewal-Setup.cmd"
