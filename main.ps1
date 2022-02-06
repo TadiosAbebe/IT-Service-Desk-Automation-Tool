@@ -13,6 +13,17 @@ $btn_admin_enable_Click = { enable_admin }
 $btn_set_password_Click = { set_admin_password }
 $btn_add_thispc_Click = { add_thispcicon }
 $btn_addnetwork_Click = { add_networkicon }
+$btn_rename_Click = { rename_computer }
+
+function rename_computer {
+    if ($tb_new_computer_name.Text -eq "") {
+        $tb_new_computer_name.BackColor = "Red"
+    }
+    else {
+        $new_name = $tb_new_computer_name.Text
+        Rename-Computer -NewName $new_name
+    }
+}
 
 function add_networkicon {
     New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel -Name "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" -PropertyType DWord -Value 0 -Force
