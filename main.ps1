@@ -64,6 +64,19 @@ $btn_changednsalt_Click = {
     netsh interface ipv4 add dnsservers name=$global:selected_adapter address="$d2" validate=no index=2
     set_info
 }
+$btn_check_status_Click = { check_act_stat }
+
+function check_act_stat {
+    $licence_info = Get-CIMInstance -query "select Name, Description, LicenseStatus from SoftwareLicensingProduct where LicenseStatus=1" | Format-List Name, Description, LicenseStatus
+    if ($licence_info) {
+        Write-Host "Windows is Activated`n" -foregroundcolor Green
+        Add-OutputBoxLine -Message "Windows is Activated"
+    }
+    else {
+        Write-Host "Windows is Not Activated`n" -foregroundcolor Red
+        Add-OutputBoxLine -Message "Windows is Not Activated"
+    }    
+}
 
 function fetch_info_slow {
     if ($lst_adapter.SelectedItem) {
