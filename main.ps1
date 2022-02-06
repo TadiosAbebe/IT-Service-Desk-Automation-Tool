@@ -1,3 +1,8 @@
+$global:selected_adapter = $null
+$global:tb_ip1 = $null
+$global:tb_subnet1 = $null
+$global:tb_getway1 = $null
+
 $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
 $testadmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
 if ($testadmin -eq $false) {
@@ -14,6 +19,51 @@ $btn_set_password_Click = { set_admin_password }
 $btn_add_thispc_Click = { add_thispcicon }
 $btn_addnetwork_Click = { add_networkicon }
 $btn_rename_Click = { rename_computer }
+$lst_adapter_SelectedIndexChanged = { set_info }
+
+function fetch_info {
+    if ($lst_adapter.SelectedItem) {
+        $global:selected_adapter = $lst_adapter.selecteditem
+        $global:tb_ip1 = netsh interface ip show address "$global:selected_adapter" `
+        | where { $_ -match "IP Address" } `
+        | % { $_ -replace "^.*IP Address:\W*", "" }
+        $global:tb_subnet1 = netsh interface ip show address "$global:selected_adapter" `
+        | where { $_ -match "Subnet Prefix" } `
+        | % { $_ -replace "^.*Subnet Prefix:\W*", "" }
+        $global:tb_getway1 = netsh interface ip show address "$global:selected_adapter" `
+        | where { $_ -match "Default Gateway" } `
+        | % { $_ -replace "^.*Default Gateway:\W*", "" }
+    }
+    else {
+        Write-Host "Select a Network Adapter" -foregroundcolor Red
+        Add-OutputBoxLine -Message "Select a Network Adapter"
+    }
+}
+
+function set_info {
+    fetch_info
+    if ($lst_adapter.SelectedItem) {
+        Add-OutputBoxLine -Message "---------------------------------"
+        Add-OutputBoxLine -Message "Network Interface: $global:selected_adapter"
+        $tb_ip.Text = $global:tb_ip1
+        Add-OutputBoxLine -Message "IPv4 Address: $global:tb_ip1"
+        $tb_subnet.Text = $global:tb_subnet1
+        Add-OutputBoxLine -Message "Subnet Address: $global:tb_subnet1"
+        $tb_getway.Text = $global:tb_getway1
+        Add-OutputBoxLine -Message "Default Gateway: $global:tb_getway1"
+        $dns1 = ((((get-netipconfiguration -interfacealias $global:selected_adapter).dnsserver)[1]).serveraddresses)[0]
+        $dns2 = ((((get-netipconfiguration -interfacealias $global:selected_adapter).dnsserver)[1]).serveraddresses)[1]
+        $tb_dns.Text = $dns1
+        Add-OutputBoxLine -Message "DNS Address: $dns1"
+        $tb_dnsalt.Text = $dns2
+        Add-OutputBoxLine -Message "Alternative DNS: $dns2"
+        Add-OutputBoxLine -Message "---------------------------------"  
+    }
+    else {
+        Write-Host "Select a Network Adapter" -foregroundcolor Red
+        Add-OutputBoxLine -Message "Select a Network Adapter"
+    }
+}
 
 function rename_computer {
     if ($tb_new_computer_name.Text -eq "") {
