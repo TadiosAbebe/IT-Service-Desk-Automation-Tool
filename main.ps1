@@ -84,6 +84,20 @@ $btn_uncheck_all_Click = {
     $cb6.Checked = $false
     $cb7.Checked = $false
 }
+$btn_clear_Click = {
+    $tb_admin_password.Text = ""
+    $tb_new_computer_name.Text = ""
+    $tb_getway.Text = ""
+    $tb_ip.Text = ""
+    $tb_ip_new.Text = ""
+    $tb_subnet.Text = ""
+    $tb_subnet_new.Text = ""
+    $tb_getway_new.Text = ""
+    $tb_dns.Text = ""
+    $tb_dns_new.Text = ""
+    $tb_dnsalt.Text = ""
+    $tb_dnsalt_new.Text = ""
+}
 
 function windows_activate {
     $loc1 = Join-Path $PSScriptRoot "res\KMS_VL_ALL-34\AutoRenewal-Setup.cmd"
