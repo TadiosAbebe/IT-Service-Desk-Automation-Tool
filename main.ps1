@@ -65,6 +65,15 @@ $btn_changednsalt_Click = {
     set_info
 }
 $btn_check_status_Click = { check_act_stat }
+$btn_activate_Click = { windows_activate }
+
+function windows_activate {
+    $loc1 = Join-Path $PSScriptRoot "res\KMS_VL_ALL-34\AutoRenewal-Setup.cmd"
+    $loc2 = Join-Path $PSScriptRoot "res\KMS_VL_ALL-34\Activate.cmd"
+    Start-Process -FilePath "C:\Windows\System32\cmd.exe" -ArgumentList "/c", $loc1 -Verb RunAs -Wait
+    Start-Process -FilePath "C:\Windows\System32\cmd.exe" -ArgumentList "/c", $loc2 -Verb RunAs -Wait
+    check_act_stat
+}
 
 function check_act_stat {
     $licence_info = Get-CIMInstance -query "select Name, Description, LicenseStatus from SoftwareLicensingProduct where LicenseStatus=1" | Format-List Name, Description, LicenseStatus
