@@ -54,6 +54,16 @@ $btn_changegetway_Click = {
         set_info_slow
     }
 }
+$btn_changedns_Click = {
+    $d1 = $tb_dns_new.Text
+    netsh interface ipv4 set dnsservers name=$global:selected_adapter  source=static address="$d1" validate=no
+    set_info
+}
+$btn_changednsalt_Click = {
+    $d2 = $tb_dnsalt_new.Text
+    netsh interface ipv4 add dnsservers name=$global:selected_adapter address="$d2" validate=no index=2
+    set_info
+}
 
 function fetch_info_slow {
     if ($lst_adapter.SelectedItem) {
