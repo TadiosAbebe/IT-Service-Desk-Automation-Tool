@@ -42,6 +42,18 @@ $btn_changesubnet_Click = {
         set_info_slow
     }
 }
+$btn_changegetway_Click = {
+    $ip = $tb_ip_new.Text
+    $get = $tb_getway_new.Text
+    if ($ip -eq "") {
+        $tb_ip_new.BackColor = "Red"        
+    }
+    else {
+        $tb_ip_new.BackColor = "White"
+        netsh interface ipv4 set address name=$global:selected_adapter source=static address=$ip gateway=$get store=persistent
+        set_info_slow
+    }
+}
 
 function fetch_info_slow {
     if ($lst_adapter.SelectedItem) {
