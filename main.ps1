@@ -25,6 +25,11 @@ $btn_dhcp_Click = {
     netsh interface ipv4 set dnsservers name=$global:selected_adapter source=dhcp
     set_info_slow
 }
+$btn_changeip_Click = {
+    $ip = $tb_ip_new.Text
+    netsh interface ipv4 set address name=$global:selected_adapter source=static address=$ip store=persistent
+    set_info_slow
+}
 
 function fetch_info_slow {
     if ($lst_adapter.SelectedItem) {
