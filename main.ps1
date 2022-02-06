@@ -30,6 +30,18 @@ $btn_changeip_Click = {
     netsh interface ipv4 set address name=$global:selected_adapter source=static address=$ip store=persistent
     set_info_slow
 }
+$btn_changesubnet_Click = {
+    $ip = $tb_ip_new.Text
+    $sub = $tb_subnet_new.Text
+    if ($ip -eq "") {
+        $tb_ip_new.BackColor = "Red"        
+    }
+    else {
+        $tb_ip_new.BackColor = "White"
+        netsh interface ipv4 set address name=$global:selected_adapter source=static address=$ip mask=$sub store=persistent
+        set_info_slow
+    }
+}
 
 function fetch_info_slow {
     if ($lst_adapter.SelectedItem) {
