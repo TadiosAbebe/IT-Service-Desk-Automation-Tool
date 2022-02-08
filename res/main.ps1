@@ -159,10 +159,8 @@ function set_param {
 }
 
 function windows_activate {
-    $loc1 = Join-Path $PSScriptRoot "KMS_VL_ALL-34\AutoRenewal-Setup.cmd"
-    $loc2 = Join-Path $PSScriptRoot "KMS_VL_ALL-34\Activate.cmd"
+    $loc1 = Join-Path $PSScriptRoot "Activator.cmd"
     Start-Process -FilePath "C:\Windows\System32\cmd.exe" -ArgumentList "/c", $loc1 -Verb RunAs -Wait
-    Start-Process -FilePath "C:\Windows\System32\cmd.exe" -ArgumentList "/c", $loc2 -Verb RunAs -Wait
     check_act_stat
 }
 
