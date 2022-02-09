@@ -1,3 +1,4 @@
+[System.Windows.Forms.Application]::EnableVisualStyles()
 $Form1 = New-Object -TypeName System.Windows.Forms.Form
 
 [System.Windows.Forms.GroupBox]$GroupBox1 = $null
